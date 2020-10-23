@@ -1,12 +1,17 @@
-import express from 'express';
-
-const app = express();
-
-const PORT = 5678;
+import { port } from './config';
+import app from './app';
+import connectToDatabase from './db/scripts/connection-handler';
 
 const start = async () => {
-  await app.listen(PORT);
-  console.log(`Server listening in port ${PORT}`);
+  try {
+    await connectToDatabase();
+    console.info('🔥  Connected to DB');
+
+    app.listen(port);
+    console.info(`Server listening on port ${port}`);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 start();
