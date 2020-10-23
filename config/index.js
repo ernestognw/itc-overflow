@@ -6,5 +6,6 @@ const port = process.env.PORT || 3000; // Default port
 const mongo = {
   url: process.env.MONGO_URI || 'mongodb://localhost:27017/itc-overflow', // Default connection stirng
 };
+const secret = process.env.JWT_SECRET;
 
-export { port, mongo };
+export { port, mongo, secret };

@@ -10,6 +10,6 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Routes
-app.use(api);
+app.use('/api', api);
 
 export default app;
