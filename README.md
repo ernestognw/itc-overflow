@@ -6,8 +6,8 @@ Texto explicativo
 
 Install the required packages and run the application locally with:
 ```bash
-npm install
-npm start dev
+yarn install
+yarn start
 ```
 
 
