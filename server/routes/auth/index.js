@@ -40,10 +40,11 @@ auth.post('/login', async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user || !comparePasswords(password, user.password)) {
-    return res.status(401).json({
+    res.status(401).json({
       message: 'Login failed',
       error: "Email and password don't match",
     });
+    return;
   }
 
   const token = jwt.sign({ userId: user.id }, secret, { expiresIn: 86400 });

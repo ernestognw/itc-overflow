@@ -25,25 +25,15 @@ const Sidebar = () => {
     content = (
       <>
         <SubtitleContainer style={{ marginTop: 20, marginBottom: 10 }}>
-          <Paragraph style={{ color: 'white', margin: 0, fontSize: 10 }}>
-            Home
-          </Paragraph>
+          <Paragraph style={{ color: 'white', margin: 0, fontSize: 10 }}>Home</Paragraph>
         </SubtitleContainer>
         <Tooltip placement="right" title="Home">
-          <Container
-            active={
-              pathname === '/all' || pathname === '/' || pathname === '/users'
-            }
-          >
+          <Container active={pathname === '/all' || pathname === '/' || pathname === '/users'}>
             <Link to="/">
               <Avatar
                 style={{ background: theme.colors.primaryPalette[4] }}
                 size={50}
-                icon={
-                  <HomeOutlined
-                    style={{ color: theme.colors.background.dark }}
-                  />
-                }
+                icon={<HomeOutlined style={{ color: theme.colors.background.dark }} />}
               />
             </Link>
           </Container>
@@ -55,34 +45,20 @@ const Sidebar = () => {
                 <Avatar
                   style={{ background: theme.colors.primaryPalette[4] }}
                   size={50}
-                  icon={
-                    <PlusOutlined
-                      style={{ color: theme.colors.background.dark }}
-                    />
-                  }
+                  icon={<PlusOutlined style={{ color: theme.colors.background.dark }} />}
                 />
               </Link>
             </Container>
           </Tooltip>
         )}
         <SubtitleContainer style={{ marginTop: 20, marginBottom: 10 }}>
-          <Paragraph style={{ color: 'white', margin: 0, fontSize: 10 }}>
-            Activos
-          </Paragraph>
+          <Paragraph style={{ color: 'white', margin: 0, fontSize: 10 }}>Activos</Paragraph>
         </SubtitleContainer>
         {user.worksAt.map(
           ({ development }) =>
             development.active && (
-              <Tooltip
-                key={development.id}
-                placement="right"
-                title={development.name}
-              >
-                <Container
-                  active={
-                    pathname.includes(development.id) ? 'true' : undefined
-                  }
-                >
+              <Tooltip key={development.id} placement="right" title={development.name}>
+                <Container active={pathname.includes(development.id) ? 'true' : undefined}>
                   <Link to={`/development/${development.id}`}>
                     <Avatar size={50} src={development.logo} />
                   </Link>

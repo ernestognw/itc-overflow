@@ -3,7 +3,7 @@ const getPaginateParams = ({ query }) => {
 
   return {
     page: page || 1,
-    pageSize: page || 20,
+    pageSize: pageSize || 20,
   };
 };
 

@@ -8,15 +8,13 @@ answers.get('/', async (req, res) => {
   const { page, pageSize } = getPaginateParams(req);
 
   const [results, count] = await Promise.all([
-    Answer.find({}, projection)
+    Answer.find({})
       .skip(pageSize * (page - 1))
       .limit(pageSize),
     Answer.countDocuments({}),
   ]);
 
-  return res
-    .status(200)
-    .json(paginate({ results, count, params: { page, pageSize } }));
+  return res.status(200).json(paginate({ results, count, params: { page, pageSize } }));
 });
 
 answers.get('/:id', async (req, res) => {

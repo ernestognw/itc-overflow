@@ -10,13 +10,9 @@ const UserProvider = ({ children }) => {
   const token = localStorage.getItem('token');
   const tokenPayload = token ? jwt.decode(token) : {};
 
-  const { data, isLoading } = useQuery(
-    'user',
-    () => api.user.get(tokenPayload.userId),
-    {
-      enabled: token,
-    }
-  );
+  const { data, isLoading } = useQuery('user', () => api.user.get(tokenPayload.userId), {
+    enabled: token,
+  });
 
   return (
     <userContext.Provider

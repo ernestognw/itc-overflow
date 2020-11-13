@@ -3,15 +3,8 @@ import React from 'react';
 import { PageHeader, Avatar, Dropdown, Menu, Typography } from 'antd';
 import { useLayout } from '@providers/layout';
 import { useUser } from '@providers/user';
-import { useHistory, useLocation, Link } from 'react-router-dom';
-import {
-  UserOutlined,
-  DownOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-  AppstoreOutlined,
-  CommentOutlined,
-} from '@ant-design/icons';
+import { useLocation, Link } from 'react-router-dom';
+import { DownOutlined, LogoutOutlined, AppstoreOutlined, CommentOutlined } from '@ant-design/icons';
 import { NavbarContainer, NameContainer, ProfileButton } from './elements';
 
 const { Item, ItemGroup } = Menu;
@@ -20,7 +13,6 @@ const { Text } = Typography;
 const NavBar = () => {
   const { title } = useLayout();
   const { user } = useUser();
-  const { push } = useHistory();
   const { pathname } = useLocation();
 
   const handleLogout = () => {

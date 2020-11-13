@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import api from '@api';
-import { Card, Form, Input, Button, Image, message } from 'antd';
+import { Card, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const { Item } = Form;
@@ -40,11 +40,7 @@ const Login = () => {
           name="password"
           rules={[{ required: true, message: 'Ingresa tu password' }]}
         >
-          <Input
-            prefix={<LockOutlined />}
-            type="password"
-            placeholder="Password"
-          />
+          <Input prefix={<LockOutlined />} type="password" placeholder="Password" />
         </Item>
         <Item style={{ marginTop: 20 }}>
           <Button loading={logging} block type="primary" htmlType="submit">

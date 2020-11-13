@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { port } from './config';
 import app from './app';
 import connectToDatabase from './db/scripts/connection-handler';

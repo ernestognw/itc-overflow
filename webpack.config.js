@@ -5,10 +5,7 @@ const themeVariables = require('./src/config/theme/variables.json');
 
 module.exports = (config) => {
   config.resolve.alias['@layouts'] = path.join(__dirname, './src/layouts');
-  config.resolve.alias['@components'] = path.join(
-    __dirname,
-    './src/components'
-  );
+  config.resolve.alias['@components'] = path.join(__dirname, './src/components');
   config.resolve.alias['@config'] = path.join(__dirname, './src/config');
   config.resolve.alias['@api'] = path.join(__dirname, './src/api');
   config.resolve.alias['@views'] = path.join(__dirname, './src/views');

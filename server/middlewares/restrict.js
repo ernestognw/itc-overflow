@@ -4,21 +4,24 @@ import { secret } from '../config';
 const restrict = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) {
-    return res.status(401).json({
+    res.status(401).json({
       message: 'Unauthorized',
       error: 'No Authorization header provided',
     });
+    return;
   }
   const token = authorization.split(' ')[1];
-  jwt.verify(token, secret, (err, token) => {
+
+  jwt.verify(token, secret, (err, payload) => {
     if (err) {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Unauthorized',
         error: err,
       });
+      return;
     }
 
-    req.userId = token.userId;
+    req.userId = payload.userId;
     next();
   });
 };
