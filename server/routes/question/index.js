@@ -5,10 +5,15 @@ import { getPaginateParams, paginate } from '../../utils/pagination';
 const questions = Router();
 
 questions.get('/', async (req, res) => {
+  const { user } = req.query;
   const { page, pageSize } = getPaginateParams(req);
 
+  const query = {};
+
+  if (user) query.user = user;
+
   const [results, count] = await Promise.all([
-    Question.find({})
+    Question.find(query)
       .skip(pageSize * (page - 1))
       .limit(pageSize),
     Question.countDocuments({}),
