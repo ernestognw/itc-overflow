@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Layout, Button } from 'antd';
+import { Layout, Button, Avatar as DefaultAvatar } from 'antd';
 
 const { Header } = Layout;
 
@@ -22,4 +22,9 @@ const ProfileButton = styled(Button)`
   align-items: center;
 `;
 
-export { NavbarContainer, NameContainer, ProfileButton };
+const Avatar = styled(DefaultAvatar)`
+  margin-right: 15px;
+  background-color: ${(props) => props.theme.colors.primary};
+`;
+
+export { NavbarContainer, NameContainer, ProfileButton, Avatar };

@@ -1,24 +1,21 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
-import { PageHeader, Avatar, Dropdown, Menu, Typography } from 'antd';
+import { PageHeader, Dropdown, Menu, Typography } from 'antd';
 import { useLayout } from '@providers/layout';
 import { useUser } from '@providers/user';
 import { useLocation, Link } from 'react-router-dom';
 import { DownOutlined, LogoutOutlined, AppstoreOutlined, CommentOutlined } from '@ant-design/icons';
-import { NavbarContainer, NameContainer, ProfileButton } from './elements';
+import { NavbarContainer, NameContainer, ProfileButton, Avatar } from './elements';
 
 const { Item, ItemGroup } = Menu;
 const { Text } = Typography;
 
 const NavBar = () => {
   const { title } = useLayout();
-  const { user } = useUser();
+  const { user, setToken } = useUser();
   const { pathname } = useLocation();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.reload();
-  };
+  const handleLogout = () => setToken();
 
   return (
     <>
@@ -33,21 +30,19 @@ const NavBar = () => {
           trigger={['click']}
           overlay={
             <Menu mode="vertical">
-              <ItemGroup title="Sesión">
+              <ItemGroup title="Session">
                 <Item onClick={handleLogout} icon={<LogoutOutlined />}>
-                  Salir
+                  Logout
                 </Item>
               </ItemGroup>
             </Menu>
           }
         >
           <ProfileButton type="text">
-            <Avatar style={{ marginRight: 15 }} size={35} src={user.profileImg}>
-              {user.firstName?.[0]}
-            </Avatar>
+            <Avatar size={35}>{user.firstName?.[0]}</Avatar>
             <NameContainer>
               <Text style={{ fontSize: 12 }} type="secondary">
-                Bienvenido
+                Welcome
               </Text>
               <Text style={{ marginTop: -5 }} strong>
                 {user.firstName}
@@ -59,10 +54,10 @@ const NavBar = () => {
       </NavbarContainer>
       <Menu mode="horizontal" selectedKeys={[pathname]}>
         <Item key="/" icon={<CommentOutlined />}>
-          <Link to="/">Mis preguntas</Link>
+          <Link to="/">My questions</Link>
         </Item>
         <Item key="/all" icon={<AppstoreOutlined />}>
-          <Link to="/all">Todas las preguntas</Link>
+          <Link to="/all">All questions</Link>
         </Item>
       </Menu>
     </>

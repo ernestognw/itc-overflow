@@ -2,7 +2,7 @@ import React from 'react';
 import { useTitle } from '@providers/layout';
 
 const MyQuestions = () => {
-  useTitle('Mis preguntas');
+  useTitle('My questions');
 
   return (
     <>
