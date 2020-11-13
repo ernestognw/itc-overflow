@@ -1,49 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTitle } from '@providers/layout';
 import { useQuery } from 'react-query';
 import api from '@api';
 import { useUser } from '@providers/user';
 import Box from '@components/box';
-import Loading from '@components/loading';
-import { Empty } from 'antd';
+import Questions from '@components/questions';
+
+const defaultSortBy = {
+  sortBy: 'createdAt',
+  order: 'desc',
+};
+
+const defaultParams = {
+  page: 1,
+  pageSize: 20,
+};
 
 const MyQuestions = () => {
   useTitle('My questions');
 
+  const [sortBy, setSortBy] = useState(defaultSortBy);
+  const [search, setSearch] = useState('');
+  const [params, setParams] = useState(defaultParams);
   const { user } = useUser();
 
-  const { data, isLoading } = useQuery('my-question', () =>
-    api.question.getAll({ user: user._id })
+  const { data, isLoading } = useQuery(['my-questions', { search, sortBy }], () =>
+    api.question.getAll({ user: user._id, ...sortBy, searchBy: ['title', 'content'], search })
   );
 
-  if (isLoading) {
-    return (
-      <Box display="flex" alignItems="center" justifyContent="center" m={60}>
-        <Loading />
-      </Box>
-    );
-  }
-
-  if (data.results.length === 0) {
-    return (
-      <Box display="flex" alignItems="center" justifyContent="center" m={60}>
-        <Empty />
-      </Box>
-    );
-  }
-
-  if (data.results.length === 0) {
-    return (
-      <>
-        <p>No data</p>
-      </>
-    );
-  }
-
   return (
-    <>
-      <p>{JSON.stringify(data)}</p>
-    </>
+    <Box px={20}>
+      <Questions
+        params={params}
+        setParams={setParams}
+        defaultParams={defaultParams}
+        search={search}
+        setSearch={setSearch}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        defaultSortBy={defaultSortBy}
+        questions={data}
+        loading={isLoading}
+      />
+    </Box>
   );
 };
 

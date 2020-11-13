@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api from '@api';
 import { useUser } from '@providers/user';
+import { passwordRegex } from '@config/constants';
 import { Link } from 'react-router-dom';
 import { Card, Form, Input, Button, Typography, Divider, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -53,6 +54,17 @@ const Login = () => {
               required: true,
               message: 'Enter your password',
             },
+            () => ({
+              validator: (_, value) => {
+                const validPasswordToSet = passwordRegex.test(value);
+
+                if (validPasswordToSet) return Promise.resolve();
+
+                return Promise.reject(
+                  'La contraseña debe tener al menos 8 caractéres, con un número y un caractér especial'
+                );
+              },
+            }),
           ]}
           hasFeedback
         >

@@ -1,11 +1,17 @@
-/* eslint-disable no-unused-expressions */
-import React from 'react';
-import { PageHeader, Dropdown, Menu, Typography } from 'antd';
+import React, { useState } from 'react';
+import { PageHeader, Dropdown, Menu, Typography, Button } from 'antd';
 import { useLayout } from '@providers/layout';
 import { useUser } from '@providers/user';
 import { useLocation, Link } from 'react-router-dom';
-import { DownOutlined, LogoutOutlined, AppstoreOutlined, CommentOutlined } from '@ant-design/icons';
+import {
+  DownOutlined,
+  LogoutOutlined,
+  AppstoreOutlined,
+  CommentOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import { NavbarContainer, NameContainer, ProfileButton, Avatar } from './elements';
+import CreateQuestionModal from './create-question-modal';
 
 const { Item, ItemGroup } = Menu;
 const { Text } = Typography;
@@ -14,11 +20,16 @@ const NavBar = () => {
   const { title } = useLayout();
   const { user, setToken } = useUser();
   const { pathname } = useLocation();
+  const [createQuestionModalOpen, toggleQuestionModal] = useState(false);
 
   const handleLogout = () => setToken();
 
   return (
     <>
+      <CreateQuestionModal
+        visible={createQuestionModalOpen}
+        onCancel={() => toggleQuestionModal(false)}
+      />
       <NavbarContainer>
         <PageHeader
           backIcon={false}
@@ -26,6 +37,15 @@ const NavBar = () => {
           title={title}
           theme="dark"
         />
+        <Button
+          size="small"
+          icon={<PlusOutlined />}
+          style={{ marginRight: 15 }}
+          onClick={() => toggleQuestionModal(true)}
+          type="primary"
+        >
+          New question
+        </Button>
         <Dropdown
           trigger={['click']}
           overlay={
