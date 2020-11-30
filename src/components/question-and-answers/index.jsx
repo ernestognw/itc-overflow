@@ -35,20 +35,15 @@ const QuestionAndAnswers = ({
   question,
   loading,
 }) => {
-  console.log(question);
-
   const [posting, setPosting] = useState(false);
 
   const addAnswer = async (values) => {
     setPosting(true);
     const answer = { questionId: question._id, ...values };
     try {
-      console.log('Adding answer', answer);
       const res = await api.answer.create(answer);
-      console.log('res', res);
       message.success('Answer posted');
     } catch (err) {
-      console.log(err);
       message.error('Account not recognized. Verify your email and password');
     }
     setPosting(false);

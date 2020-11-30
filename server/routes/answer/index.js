@@ -33,8 +33,6 @@ answers.post('/', async (req, res) => {
   const doc = await Question.updateOne({ _id: questionId }, { $push: { answers: answer } });
   answer.save();
 
-  console.log('doc', doc);
-
   return res.status(200).json(answer);
 });
 
