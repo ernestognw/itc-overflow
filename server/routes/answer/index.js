@@ -30,7 +30,7 @@ answers.post('/', async (req, res) => {
   const { questionId, content } = req.body;
 
   const answer = new Answer({ user: req.userId, content });
-  const doc = await Question.updateOne({ _id: questionId }, { $push: { answers: answer } });
+  await Question.updateOne({ _id: questionId }, { $push: { answers: answer } });
   answer.save();
 
   return res.status(200).json(answer);
