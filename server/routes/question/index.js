@@ -34,7 +34,10 @@ questions.get('/', async (req, res) => {
 
 questions.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const question = await Question.findOne({ _id: id });
+  const question = await Question.findOne({ _id: id }).populate({
+    path: 'answers',
+    populate: { path: 'user' },
+  });
 
   if (!question) return res.status(404).json(question);
 

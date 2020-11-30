@@ -6,6 +6,7 @@ import moment from 'moment';
 import Loading from '@components/loading';
 import { orders } from '@config/constants';
 import { Avatar } from './elements';
+import { Link } from 'react-router-dom';
 
 const { Paragraph, Title, Text } = Typography;
 const { Search } = Input;
@@ -73,7 +74,7 @@ const Questions = ({
                   content={
                     <>
                       <Title style={{ margin: 0 }} level={5}>
-                        {title}
+                        <Link to={`/questions/${_id}`}>{title}</Link>
                       </Title>
                       <Paragraph m={0} style={{ margin: 0 }}>
                         {content}

@@ -20,6 +20,10 @@ const question = {
     const { data } = await client.get(`${endpoint}?${params.toString()}`);
     return data;
   },
+  getOne: async ({ id }) => {
+    const { data } = await client.get(`/question/${id}`);
+    return data;
+  },
   create: async ({ title, content }) => {
     const { data } = await client.post('/question', { title, content });
     return data;

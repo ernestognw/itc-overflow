@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Answer } from '../../db/models';
+import { Answer, Question } from '../../db/models';
 import { getPaginateParams, paginate } from '../../utils/pagination';
 
 const answers = Router();
@@ -22,6 +22,18 @@ answers.get('/:id', async (req, res) => {
   const answer = await Answer.findOne({ _id: id });
 
   if (!answer) return res.status(404).json(answer);
+
+  return res.status(200).json(answer);
+});
+
+answers.post('/', async (req, res) => {
+  const { questionId, content } = req.body;
+
+  const answer = new Answer({ user: req.userId, content });
+  const doc = await Question.updateOne({ _id: questionId }, { $push: { answers: answer } });
+  answer.save();
+
+  console.log('doc', doc);
 
   return res.status(200).json(answer);
 });
