@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Typography,
@@ -41,7 +41,7 @@ const QuestionAndAnswers = ({
     setPosting(true);
     const answer = { questionId: question._id, ...values };
     try {
-      const res = await api.answer.create(answer);
+      await api.answer.create(answer);
       message.success('Answer posted');
     } catch (err) {
       message.error('Account not recognized. Verify your email and password');
