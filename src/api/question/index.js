@@ -34,8 +34,6 @@ const question = {
       params.set('pageSize', pageSize);
     }
 
-    console.log('client got params', params.toString());
-
     const { data } = await client.get(`${endpoint}/${id}?${params.toString()}`);
     return data;
   },
