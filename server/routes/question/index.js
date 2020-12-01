@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import Mongoose from 'mongoose';
 import { Question } from '../../db/models';
 import { getPaginateParams, paginate } from '../../utils/pagination';
-import Mongoose from 'mongoose';
 
 const questions = Router();
 
