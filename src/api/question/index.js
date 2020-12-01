@@ -20,8 +20,23 @@ const question = {
     const { data } = await client.get(`${endpoint}?${params.toString()}`);
     return data;
   },
-  getOne: async ({ id }) => {
-    const { data } = await client.get(`/question/${id}`);
+  getOne: async ({ id, order, sortBy, page, pageSize }) => {
+    const params = new URLSearchParams();
+    const endpoint = '/question';
+
+    if (sortBy && sortBy.length > 0 && order) {
+      params.set('sortBy', sortBy);
+      params.set('order', order);
+    }
+
+    if (page && pageSize) {
+      params.set('page', page);
+      params.set('pageSize', pageSize);
+    }
+
+    console.log('client got params', params.toString());
+
+    const { data } = await client.get(`${endpoint}/${id}?${params.toString()}`);
     return data;
   },
   create: async ({ title, content }) => {

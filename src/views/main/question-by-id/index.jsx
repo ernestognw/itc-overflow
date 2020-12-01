@@ -22,9 +22,14 @@ const QuestionById = ({ match }) => {
   const [sortBy, setSortBy] = useState(defaultSortBy);
   const [params, setParams] = useState(defaultParams);
 
-  const { data, isLoading } = useQuery('question-by-id', () =>
+  console.log('params', params);
+  console.log('sortBy', sortBy);
+
+  const { data, isLoading } = useQuery(['question-by-id', { sortBy, params }], () =>
     api.question.getOne({ id: questionId, ...sortBy, ...params })
   );
+
+  console.log(data);
 
   return (
     <Box px={20}>

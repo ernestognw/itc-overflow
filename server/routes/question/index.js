@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { Question } from '../../db/models';
 import { getPaginateParams, paginate } from '../../utils/pagination';
+import Mongoose from 'mongoose';
 
 const questions = Router();
 
@@ -34,14 +35,32 @@ questions.get('/', async (req, res) => {
 
 questions.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const question = await Question.findOne({ _id: id }).populate({
+  const { sortBy, order } = req.query;
+  const { page, pageSize } = getPaginateParams(req);
+
+  const query = { _id: id };
+
+  const questionPromise = Question.findOne(query).populate({
     path: 'answers',
+    options: {
+      skip: pageSize * (page - 1),
+      limit: pageSize,
+      sort: { [sortBy]: order },
+    },
     populate: { path: 'user' },
   });
 
-  if (!question) return res.status(404).json(question);
+  const countPromise = Question.aggregate([
+    { $match: { _id: Mongoose.Types.ObjectId(id) } },
+    { $project: { count: { $size: '$answers' } } },
+  ]);
 
-  return res.status(200).json(question);
+  if (sortBy && order) questionPromise.sort({ [sortBy]: order });
+  const [results, count] = await Promise.all([questionPromise, countPromise]);
+
+  if (!results) return res.status(404).json(results);
+
+  return res.status(200).json(paginate({ results, count, params: { page, pageSize } }));
 });
 
 questions.post('/', async (req, res) => {

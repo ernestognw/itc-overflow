@@ -20,6 +20,7 @@ import { orders } from '@config/constants';
 import api from '@api';
 import moment from 'moment';
 import Loading from '@components/loading';
+import { useMutation, useQueryCache } from 'react-query';
 
 const { Paragraph, Title, Text } = Typography;
 const { TextArea } = Input;
@@ -37,16 +38,26 @@ const QuestionAndAnswers = ({
 }) => {
   const [posting, setPosting] = useState(false);
 
+  const [form] = Form.useForm();
+
+  const queryCache = useQueryCache();
+
+  const [createAnswer] = useMutation(api.answer.create, {
+    onSuccess: () => {
+      message.success('Answer posted');
+      queryCache.invalidateQueries('question-by-id');
+    },
+    onError: () => {
+      message.error('An error has occurred. Try again');
+    },
+  });
+
   const addAnswer = async (values) => {
     setPosting(true);
-    const answer = { questionId: question._id, ...values };
-    try {
-      await api.answer.create(answer);
-      message.success('Answer posted');
-    } catch (err) {
-      message.error('Account not recognized. Verify your email and password');
-    }
+    const answer = { questionId: question.results._id, ...values };
+    await createAnswer({ ...answer });
     setPosting(false);
+    form.resetFields();
   };
 
   return (
@@ -59,31 +70,31 @@ const QuestionAndAnswers = ({
       {!loading && question && (
         <Box display="flex" flexDirection="column" m={60}>
           <Box as={Card} display="flex" mb={30}>
-            <Title style={{ margin: 0 }}>{question.title}</Title>
+            <Title style={{ margin: 0 }}>{question.results.title}</Title>
             <Comment
               datetime={
                 <>
-                  <Tooltip title={moment(question.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+                  <Tooltip title={moment(question.results.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
                     <Text style={{ marginRight: 8 }}>
-                      Asked {moment(question.createdAt).fromNow()}
+                      Asked {moment(question.results.createdAt).fromNow()}
                     </Text>
                   </Tooltip>
-                  <Tooltip title={moment(question.updatedAt).format('YYYY-MM-DD HH:mm:ss')}>
-                    <Text>Updated {moment(question.updatedAt).fromNow()}</Text>
+                  <Tooltip title={moment(question.results.updatedAt).format('YYYY-MM-DD HH:mm:ss')}>
+                    <Text>Updated {moment(question.results.updatedAt).fromNow()}</Text>
                   </Tooltip>
                 </>
               }
             />
             <Box display="flex">
-              <Paragraph style={{ whiteSpace: 'pre-wrap' }}>{question.content}</Paragraph>
+              <Paragraph style={{ whiteSpace: 'pre-wrap' }}>{question.results.content}</Paragraph>
             </Box>
           </Box>
 
-          {question.answers.length !== 0 && (
+          {question.results.answers.length !== 0 && (
             <>
               <Divider />
-              <Title type="secondary">{question.answers.length} Answers</Title>
-              {question.answers.map(({ _id, content, user: author, createdAt }) => (
+              <Title type="secondary">{question.results.answers.length} Answers</Title>
+              {question.results.answers.map(({ _id, content, user: author, createdAt }) => (
                 <Box as={Card} my={10} key={_id}>
                   <Comment
                     author={`${author.firstName} ${author.lastName}`}
@@ -111,7 +122,7 @@ const QuestionAndAnswers = ({
                 defaultCurrent={defaultParams.page}
                 pageSize={params.pageSize}
                 defaultPageSize={defaultParams.pageSize}
-                total={question.answers.length}
+                total={question.info.count[0].count}
                 showTotal={(total) => `${total} answers`}
                 showSizeChanger
                 onChange={(page, pageSize) => setParams({ ...params, page, pageSize })}
@@ -138,7 +149,7 @@ const QuestionAndAnswers = ({
           <Divider />
           <Box display="flex" flexDirection="column" my={20}>
             <Title type="secondary">Your Answer</Title>
-            <Form onFinish={addAnswer} layout="vertical">
+            <Form form={form} onFinish={addAnswer} layout="vertical">
               <Item
                 name="content"
                 label="Content"
